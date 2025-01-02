@@ -31,6 +31,8 @@ Tampermonkey script for removing Baidu ads
 // @author       你
 // @match        https://www.baidu.com/*
 // @grant        none
+// @license      MIT
+// @icon         https://www.baidu.com/favicon.ico
 // ==/UserScript==
 
 (function() {
@@ -54,6 +56,8 @@ Tampermonkey script for removing Baidu ads
 - `@author`：脚本作者，你可以填上自己的名字。
 - `@match`：这个规则表示脚本只在 `https://www.baidu.com/*` 页面上生效，确保只在百度的搜索页面执行。
 - `@grant`：指定脚本是否需要特殊权限，在本例中我们不需要额外的权限。
+- `@license`：指定脚本的许可证，例如 "MIT"。
+- `@icon`：指定脚本的图标，可以是任何有效的 URL。
 
 ### 4. 保存并测试脚本
 1. 保存并启用脚本。
