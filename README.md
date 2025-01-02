@@ -12,7 +12,7 @@ Tampermonkey script for removing Baidu ads
 ### 1. 安装 Tampermonkey 插件
 首先，确保你已经安装了 Tampermonkey 插件，Tampermonkey 是一个在浏览器中运行用户脚本的扩展。
 
-- **Chrome**: 访问 [Chrome 网上应用店](https://chrome.google.com/webstore/detail/tampermonkey) 安装 Tampermonkey。
+- **Chrome**: 访问 [Chrome 网上应用店](https://chromewebstore.google.com/detail/%E7%AF%A1%E6%94%B9%E7%8C%B4/dhdgffkkebhmkfjojejmpbldmpobfkfo) 安装 Tampermonkey。
 - **Firefox**: 访问 [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/) 安装 Tampermonkey。
 
 ### 2. 创建 Tampermonkey 脚本
