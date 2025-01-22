@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         屏蔽百度搜索网页中无用信息
 // @namespace    http://tampermonkey.net/
-// @version      1.4
+// @version      1.5
 // @description  屏蔽百度搜索网页的引导元素，并去除百度首页搜索框自动加载的热搜内容词条，清空 placeholder
 // @author       sept
 // @match        https://www.baidu.com/*
@@ -15,12 +15,28 @@
 (function() {
     'use strict';
 
-    // 屏蔽百度搜索页面中的 id="s_new_search_guide" 的 div 元素
-    window.addEventListener('load', function() {
-        var guideElement = document.getElementById('s_new_search_guide');
-        if (guideElement) {
-            guideElement.style.display = 'none';  // 隐藏元素
-        }
+    // 在 DOM 加载前就应用样式
+    var style = document.createElement('style');
+    style.textContent = '#s_new_search_guide { display: none !important; }';
+    document.head.appendChild(style);
+
+    // 使用 MutationObserver 确保元素被立即隐藏
+    var guideObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+                var guideElement = document.getElementById('s_new_search_guide');
+                if (guideElement) {
+                    guideElement.style.display = 'none';
+                    guideObserver.disconnect(); // 找到元素后停止观察
+                }
+            }
+        });
+    });
+
+    // 开始观察整个文档
+    guideObserver.observe(document.body, {
+        childList: true,
+        subtree: true
     });
 
     // 获取百度搜索框元素
@@ -31,12 +47,12 @@
         inputElement.placeholder = '';
 
         // 使用 MutationObserver 监控 placeholder 的变化
-        var observer = new MutationObserver(function(mutations) {
+        var placeholderObserver = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (mutation.type === 'attributes' && mutation.attributeName === 'placeholder') {
                     // 如果 placeholder 被动态加载，立即清空
                     inputElement.placeholder = '';
-                    observer.disconnect(); // 停止监控，避免重复清空
+                    placeholderObserver.disconnect(); // 停止监控，避免重复清空
                 }
             });
         });
@@ -48,6 +64,6 @@
         };
 
         // 开始监控
-        observer.observe(inputElement, config);
+        placeholderObserver.observe(inputElement, config);
     }
 })();
