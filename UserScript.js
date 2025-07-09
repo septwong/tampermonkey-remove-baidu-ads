@@ -12,7 +12,7 @@
 // @updateURL https://update.greasyfork.org/scripts/522389/%E5%B1%8F%E8%94%BD%E7%99%BE%E5%BA%A6%E6%90%9C%E7%B4%A2%E7%BD%91%E9%A1%B5%E4%B8%AD%E6%97%A0%E7%94%A8%E4%BF%A1%E6%81%AF.meta.js
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
     // 在 DOM 加载前就应用样式
@@ -21,8 +21,8 @@
     document.head.appendChild(style);
 
     // 使用 MutationObserver 确保元素被立即隐藏
-    var guideObserver = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
+    var guideObserver = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
             if (mutation.type === 'childList') {
                 var guideElement = document.getElementById('s_new_search_guide');
                 if (guideElement) {
@@ -48,37 +48,37 @@
 
         // 使用 MutationObserver 监控 placeholder 的变化
         // 监控chat-input-area内的textarea
-    var chatAreaObserver = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            // 查找chat-input-area内的所有textarea
-            var chatArea = document.getElementById('chat-input-area');
-            if (chatArea) {
-                var textareas = chatArea.querySelectorAll('textarea');
-                textareas.forEach(function(textarea) {
-                    // 清空所有placeholder属性
-                    textarea.placeholder = '';
-                    textarea.removeAttribute('data-ai-placeholder');
-                    textarea.removeAttribute('data-normal-placeholder');
-                });
-            }
+        var chatAreaObserver = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                // 查找chat-input-area内的所有textarea
+                var chatArea = document.getElementById('chat-input-area');
+                if (chatArea) {
+                    var textareas = chatArea.querySelectorAll('textarea');
+                    textareas.forEach(function (textarea) {
+                        // 清空所有placeholder属性
+                        textarea.placeholder = '';
+                        textarea.removeAttribute('data-ai-placeholder');
+                        textarea.removeAttribute('data-normal-placeholder');
+                    });
+                }
+            });
         });
-    });
 
-    // 开始监控body的子节点变化
-    chatAreaObserver.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-
-    var placeholderObserver = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'placeholder') {
-                // 如果 placeholder 被动态加载，立即清空
-                inputElement.placeholder = '';
-                placeholderObserver.disconnect(); // 停止监控，避免重复清空
-            }
+        // 开始监控body的子节点变化
+        chatAreaObserver.observe(document.body, {
+            childList: true,
+            subtree: true
         });
-    });
+
+        var placeholderObserver = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'placeholder') {
+                    // 如果 placeholder 被动态加载，立即清空
+                    inputElement.placeholder = '';
+                    placeholderObserver.disconnect(); // 停止监控，避免重复清空
+                }
+            });
+        });
 
         // 配置 MutationObserver，监控 placeholder 属性的变化
         var config = {
