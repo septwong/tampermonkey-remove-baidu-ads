@@ -47,15 +47,38 @@
         inputElement.placeholder = '';
 
         // 使用 MutationObserver 监控 placeholder 的变化
-        var placeholderObserver = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'placeholder') {
-                    // 如果 placeholder 被动态加载，立即清空
-                    inputElement.placeholder = '';
-                    placeholderObserver.disconnect(); // 停止监控，避免重复清空
-                }
-            });
+        // 监控chat-input-area内的textarea
+    var chatAreaObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            // 查找chat-input-area内的所有textarea
+            var chatArea = document.getElementById('chat-input-area');
+            if (chatArea) {
+                var textareas = chatArea.querySelectorAll('textarea');
+                textareas.forEach(function(textarea) {
+                    // 清空所有placeholder属性
+                    textarea.placeholder = '';
+                    textarea.removeAttribute('data-ai-placeholder');
+                    textarea.removeAttribute('data-normal-placeholder');
+                });
+            }
         });
+    });
+
+    // 开始监控body的子节点变化
+    chatAreaObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    var placeholderObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'placeholder') {
+                // 如果 placeholder 被动态加载，立即清空
+                inputElement.placeholder = '';
+                placeholderObserver.disconnect(); // 停止监控，避免重复清空
+            }
+        });
+    });
 
         // 配置 MutationObserver，监控 placeholder 属性的变化
         var config = {
